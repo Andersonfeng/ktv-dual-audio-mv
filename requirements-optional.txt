@@ -1,0 +1,6 @@
+# 可选依赖：只有需要高质量人声分离时才安装。
+# 推荐直接使用系统 Python 安装：
+#   python -m pip install -U demucs -i https://pypi.org/simple/
+# 或者使用本文件：
+#   python -m pip install -r requirements-optional.txt -i https://pypi.org/simple/
+demucs>=4.0.1
