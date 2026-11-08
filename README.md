@@ -1,4 +1,6 @@
-# KTV 双音轨 MV 工具 v1.0.2
+# KTV 双音轨 MV 工具 v1.0.3
+
+![演示截图](demo.jpg)
 
 把单音轨的 MP4 / MKV / FLV / F4V 批量转换成双音轨 MKV：
 
@@ -231,6 +233,14 @@ python -c "import demucs, torch; print(demucs.__version__, torch.__version__)"
 ```
 
 如果使用过项目内的 `.venv`，程序会同时检查 `.venv` 和系统 Python；只要其中一个能导入 Demucs 就会自动使用。
+
+### 报错「Can't write packet with unknown timestamp」
+
+这是源视频的时间戳损坏：部分老 MKV（常见于 MPEG-4/Xvid 视频）只有 DTS，没有 PTS。封装成 MKV 时，Matroska 写入器无法处理缺失的 PTS。
+
+v1.0.3 开始，封装前会自动加 `-fflags +genpts`，用 DTS 补齐缺失的 PTS。视频仍然直接复制，不重新编码，也不损失画质。
+
+如果仍使用旧版本，请更新到 v1.0.3 后重新处理失败的文件。
 
 ### 提示「左右声道几乎完全相同」
 

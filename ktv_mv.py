@@ -34,7 +34,7 @@ except ImportError:  # Python 3.13+ 会移除 audioop；检测功能自动跳过
     audioop = None  # type: ignore[assignment]
 
 APP_NAME = "KTV 双音轨 MV 工具"
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 SUPPORTED_EXTS = {".mp4", ".mkv", ".flv", ".f4v"}
 DEFAULT_SUFFIX = ""
 LEGACY_SUFFIXES = (".dual",)
@@ -1031,6 +1031,11 @@ class Processor:
             "-loglevel",
             "error",
             "-y",
+            # 某些旧 MKV/FLV 的视频包只有 DTS、没有 PTS；
+            # 直接 -c copy 会报 “Can't write packet with unknown timestamp”。
+            # genpts 可以用 DTS 补出缺失的 PTS，并保持音画同步。
+            "-fflags",
+            "+genpts",
             "-i",
             source,
         ]
